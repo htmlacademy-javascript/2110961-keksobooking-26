@@ -39,6 +39,16 @@ const ROOM_DESCRIPTION = [
   'Квартира в отличном состоянии (евро ремонт), с бытовой техникой',
 ];
 
+const UPPER_LAT = 35.65;
+const DOWN_LAT = 35.70;
+const UPPER_LNG = 139.7;
+const DOWN_LNG = 139.8;
+
+const FLOATING_POINT= 5;
+
+const UPPER_HOUR = 2;
+const DOWN_HOUR = 4;
+
 
 function getRandomPositiveInteger (min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -93,12 +103,12 @@ const authors = Array.from({length: 10}, createAuthor);
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 
-const latFloat = getRandomPositiveFloat(35.65,35.70,5);
-const lngFloat = getRandomPositiveFloat(139.7,139.8,5);
+const latFloat = getRandomPositiveFloat(UPPER_LAT,DOWN_LAT,FLOATING_POINT);
+const lngFloat = getRandomPositiveFloat(UPPER_LNG,DOWN_LNG,FLOATING_POINT);
 
 const createLocation = () => ({
-  lat: getRandomPositiveFloat(35.65,35.70,5),
-  lng: getRandomPositiveFloat(139.7,139.8,5),
+  lat: latFloat,
+  lng: lngFloat,
 });
 
 const randomLocation = Array.from({length: 10}, createLocation);
@@ -113,8 +123,8 @@ const checkInTimer = (hour) => `1${hour}:00`;
 const checkOutTimer = (hour) => `1${hour}:00`;
 
 const createOffers = () => {
-  const hourIn = getRandomPositiveInteger(2, 4);
-  const hourOut = getRandomPositiveInteger(hourIn, 4);
+  const hourIn = getRandomPositiveInteger(UPPER_HOUR, DOWN_HOUR);
+  const hourOut = getRandomPositiveInteger(hourIn, DOWN_HOUR);
 
   return ({
     title: getRandomArrayElement(ROOM_TITLE),
