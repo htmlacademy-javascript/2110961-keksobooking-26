@@ -55,14 +55,6 @@ function getRandomPositiveFloat (min, max, point) {
 }
 
 
-// const number1 = getRandomPositiveInteger(2,6);
-// const number2 = getRandomPositiveFloat(1.9,2,2);
-// const number3 = getRandomPositiveFloat(35.65,35.70,5);
-// console.log(number1);
-//console.log(number2);
-//console.log(number3);
-
-
 function createRandomNumberRangeGenerator (min, max) {
   const previousValues = [];
 
@@ -101,12 +93,6 @@ const authors = Array.from({length: 10}, createAuthor);
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 
-//console.log(authors);
-
-
-// console.log(randomElement());
-
-
 const latFloat = getRandomPositiveFloat(35.65,35.70,5);
 const lngFloat = getRandomPositiveFloat(139.7,139.8,5);
 
@@ -117,19 +103,10 @@ const createLocation = () => ({
 
 const randomLocation = Array.from({length: 10}, createLocation);
 
-//console.log(randomLocation);
 
 const randomFeatures = () => ROOM_FEATURES.filter(() => getRandomPositiveInteger (0, 1));
 const randomPhotos = () => ROOM_PHOTOS.filter(() => getRandomPositiveInteger (0, 1));
 
-
-//console.log(randomItems);
-
-//console.log(createFeatures());
-
-//const randomFeatures = Array.from({length: 10}, createFeatures)
-
-// console.log(randomFeatures);
 
 const checkInTimer = (hour) => `1${hour}:00`;
 
@@ -155,4 +132,4 @@ const createOffers = () => {
 };
 
 const offers = Array.from({length: 10}, createOffers);
-//console.log(offers);
+
