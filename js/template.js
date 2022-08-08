@@ -11,8 +11,16 @@ const exebitionInputElement = document.querySelector('.map__canvas');
 
 for (let i = 0; i< similarExibitions.length; i++) {
   const exibitionElement = cardTemplate.cloneNode(true);
-  exibitionElement.querySelector('.popup__title').textContent = similarExibitions[i].title;
+  if (similarExibitions[i].title === undefined) {
+    exibitionElement.querySelector('.popup__title').remove();
+  } else {
+    exibitionElement.querySelector('.popup__title').textContent = similarExibitions[i].title;}
+
+  if (similarAuthor[i].avatar === undefined) {
+    exibitionElement.querySelector('.popup__avatar').remove();
+  }
   exibitionElement.querySelector('.popup__avatar').src = similarAuthor[i].avatar;
+
   exibitionElement.querySelector('.popup__description').textContent = similarExibitions[i].description;
   const photoPlace = exibitionElement.querySelector('.popup__photos');
   photoPlace.innerHTML = '';
@@ -27,28 +35,31 @@ for (let i = 0; i< similarExibitions.length; i++) {
   const exibitionType = similarExibitions[i].type;
   const exibitionTypeRevert = exibitionElement.querySelector('.popup__type');
 
-  if (exibitionType === 'flat') {
-    exibitionTypeRevert.textContent = 'Квартира';
+  switch (exibitionType) {
+    case 'flat':
+      exibitionTypeRevert.textContent = 'Квартира';
+      break;
+    case 'bungalow':
+      exibitionTypeRevert.textContent = 'Бунгало';
+      break;
+    case 'house':
+      exibitionTypeRevert.textContent = 'Дом';
+      break;
+    case 'palace':
+      exibitionTypeRevert.textContent = 'Дворец';
+      break;
+    case 'hotel':
+      exibitionTypeRevert.textContent = 'Отель';
+      break;
   }
-  if (exibitionType === 'bungalow') {
-    exibitionTypeRevert.textContent = 'Бунгало';
-  }
-  if (exibitionType === 'house') {
-    exibitionTypeRevert.textContent = 'Дом';
-  }
-  if (exibitionType === 'palace') {
-    exibitionTypeRevert.textContent = 'Дворец';
-  }
-  if (exibitionType === 'hotel') {
-    exibitionTypeRevert.textContent = 'Отель';
-  }
+
 
   const featuresContainer = exibitionElement.querySelector('.popup__features');
   featuresContainer.innerHTML = '';
   similarExibitions[i].features.forEach((element) => {
     const featuresListItem = document.createElement('li');
     featuresListItem.classList.add('popup__feature');
-    featuresListItem.classList.add('popup__feature--' + element);
+    featuresListItem.classList.add(`popup__feature--${element}`);
     featuresContainer.append(featuresListItem);
   });
 
