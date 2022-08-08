@@ -9,12 +9,6 @@ const mapFilterSelectElements = mapFilterElement.querySelectorAll('.map__filter'
 const mapCheckboxSelectElements = mapFilterElement.querySelectorAll('.map__checkbox');
 
 
-//console.log(fildsetsForm)
-//console.log(mapFilterSelectElements)
-//console.log(headerForm)
-//console.log(uloadRoomElement)
-
-
 const disableForms = () => {
   advertFormElement.classList.add('ad-form--disabled');
   mapFilterElement.classList.add('ad-form--disabled');
@@ -25,7 +19,6 @@ const disableForms = () => {
   mapCheckboxSelectElements.forEach((item) => item.disabled = true);
 };
 
-//disablePage()
 
 const enableForms = () => {
   advertFormElement.classList.remove('ad-form--disabled');
