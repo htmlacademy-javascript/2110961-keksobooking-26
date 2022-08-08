@@ -60,7 +60,7 @@ const createAuthor = () => ({
   avatar: `img/avatars/user${pad(generateAuthorImg(), 2)}.png`
 });
 
-const authors = () => Array.from({length: 10}, createAuthor);
+const author = () => Array.from({length: 10}, createAuthor);
 
 
 const latFloat = getRandomPositiveFloat(UPPER_LAT,DOWN_LAT,FLOATING_POINT);
@@ -100,7 +100,6 @@ const createOffers = () => {
   });
 };
 
-const offers = () => Array.from({length: 10}, createOffers);
+const offer = () => Array.from({length: 10}, createOffers);
 
-
-export {authors, randomLocations, offers};
+export {author, randomLocations, offer};
