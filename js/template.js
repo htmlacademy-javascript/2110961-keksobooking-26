@@ -6,7 +6,7 @@ const similarAuthor = author();
 
 const randomExibitionFragment = document.createDocumentFragment();
 
-const exebitionInputElement = document.querySelector('.map__canvas');
+const mapInputElement = document.querySelector('.map__canvas');
 
 
 for (let i = 0; i< similarExibitions.length; i++) {
@@ -69,4 +69,4 @@ for (let i = 0; i< similarExibitions.length; i++) {
   randomExibitionFragment.appendChild(exibitionElement);
 }
 
-exebitionInputElement.appendChild(randomExibitionFragment.childNodes[1]);
+//exebitionInputElement.appendChild(randomExibitionFragment.childNodes[1]);
