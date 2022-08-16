@@ -1,4 +1,4 @@
-import {getRandomPositiveInteger, getRandomPositiveFloat, createRandomNumberRangeGenerator, pad, getRandomArrayElement} from './util.js';
+import {getRandomPositiveInteger, getRandomPositiveFloat, createRandomNumberRangeGenerator, createNumberZeroStart, getRandomArrayElement} from './util.js';
 
 const ROOM_TITLES = [
   'Милая, уютная квартирка в центре Токио',
@@ -41,10 +41,10 @@ const ROOM_DESCRIPTIONS = [
   'Квартира в отличном состоянии (евро ремонт), с бытовой техникой',
 ];
 
-const UPPER_LAT = 35.65;
-const DOWN_LAT = 35.70;
-const UPPER_LNG = 139.7;
-const DOWN_LNG = 139.8;
+const UPPER_LAT = 35.65000;
+const DOWN_LAT = 35.70000;
+const UPPER_LNG = 139.7000;
+const DOWN_LNG = 139.8000;
 
 const FLOATING_POINT= 5;
 
@@ -75,18 +75,18 @@ const generatePrice = (createRandomNumberRangeGenerator(PRICE_START, PRICE_END))
 
 
 const createAuthor = () => ({
-  avatar: `img/avatars/user${pad(generateAuthorImg(), AUTHOR_NUMBERS_SIZE)}.png`
+  avatar: `img/avatars/user${createNumberZeroStart(generateAuthorImg(), AUTHOR_NUMBERS_SIZE)}.png`
 });
 
 const author = () => Array.from({length: ARRAY_LENGTH}, createAuthor);
 
 
-const latFloat = getRandomPositiveFloat(UPPER_LAT,DOWN_LAT,FLOATING_POINT);
-const lngFloat = getRandomPositiveFloat(UPPER_LNG,DOWN_LNG,FLOATING_POINT);
+const latFloat = () => getRandomPositiveFloat(UPPER_LAT,DOWN_LAT,FLOATING_POINT);
+const lngFloat = () => getRandomPositiveFloat(UPPER_LNG,DOWN_LNG,FLOATING_POINT);
 
 const createLocation = () => ({
-  lat: latFloat,
-  lng: lngFloat,
+  lat: latFloat(),
+  lng: lngFloat(),
 });
 
 const randomLocations = () => Array.from({length: ARRAY_LENGTH}, createLocation);
@@ -105,7 +105,7 @@ const createOffers = () => {
 
   return ({
     title: getRandomArrayElement(ROOM_TITLES),
-    address: `location.${latFloat} location.${lngFloat}`,
+    address: `location.${latFloat()} location.${lngFloat()}`,
     price: generatePrice (),
     type: getRandomArrayElement(ROOM_TYPES),
     rooms: getRandomPositiveInteger (ROOM_START, ROOM_END),

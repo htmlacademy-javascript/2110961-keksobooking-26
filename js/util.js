@@ -28,7 +28,7 @@ function createRandomNumberRangeGenerator (min, max) {
   };
 }
 
-function pad (num, size) {
+function createNumberZeroStart (num, size) {
   num = num.toString();
   while (num.length < size) {
     num = '0' + num;
@@ -39,4 +39,4 @@ function pad (num, size) {
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, createRandomNumberRangeGenerator, pad, getRandomArrayElement};
+export {getRandomPositiveInteger, getRandomPositiveFloat, createRandomNumberRangeGenerator, createNumberZeroStart, getRandomArrayElement};

@@ -15,30 +15,34 @@ const mapCheckboxSelectElements = mapFilterElement.querySelectorAll('.map__check
 const fildTimeInElement = advertFormElement.querySelector('[name="timein"]');
 const fildTimeOutElement = advertFormElement.querySelector('[name="timeout"]');
 
+
 fildTimeInElement.addEventListener('change', () => {
-  if (fildTimeInElement.value === '12:00') {
-    fildTimeOutElement.value = '12:00';
-  }
-  if (fildTimeInElement.value === '13:00') {
-    fildTimeOutElement.value = '13:00';
-  }
-  if (fildTimeInElement.value === '14:00') {
-    fildTimeOutElement.value = '14:00';
+  switch (fildTimeInElement.value) {
+    case '12:00':
+      fildTimeOutElement.value = '12:00';
+      break;
+    case '13:00':
+      fildTimeOutElement.value = '13:00';
+      break;
+    case '14:00':
+      fildTimeOutElement.value = '14:00';
+      break;
   }
 });
 
 fildTimeOutElement.addEventListener('change', () => {
-  if (fildTimeOutElement.value === '12:00') {
-    fildTimeInElement.value = '12:00';
-  }
-  if (fildTimeOutElement.value === '13:00') {
-    fildTimeInElement.value = '13:00';
-  }
-  if (fildTimeOutElement.value === '14:00') {
-    fildTimeInElement.value = '14:00';
+  switch (fildTimeOutElement.value) {
+    case '12:00':
+      fildTimeInElement.value = '12:00';
+      break;
+    case '13:00':
+      fildTimeInElement.value = '13:00';
+      break;
+    case '14:00':
+      fildTimeInElement.value = '14:00';
+      break;
   }
 });
-
 
 const pristine = new Pristine(advertFormElement, {
   classTo: 'ad-form__element',
@@ -94,7 +98,6 @@ function getRoomsErrorMessage() {
   `;
 }
 
-//pristine.addValidator(roomsField, validateRoom, getRoomsErrorMessage);
 pristine.addValidator(capacityField, validateRoom, getRoomsErrorMessage);
 
 function validateHeader(value) {
@@ -132,6 +135,7 @@ const disableForms = () => {
   mapCheckboxSelectElements.forEach((item) => item.disabled = true);
 };
 
+disableForms();
 
 const enableForms = () => {
   advertFormElement.classList.remove('ad-form--disabled');
