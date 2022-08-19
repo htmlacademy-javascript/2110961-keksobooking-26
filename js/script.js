@@ -1,14 +1,13 @@
 
-import { enableForms } from './form.js';
-import { offer } from './data.js';
+
 import { collectionCard } from './template.js';
+import { enableForms } from './form.js';
 
 const TOKYO_LAT = 35.6895;
 const TOKYO_LNG = 139.692;
 
-const adverts = offer();
+const fieldAddressElement = document.querySelector('[name="address"]');
 
-const fildAddressElement = document.querySelector('[name="address"]');
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -17,7 +16,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: TOKYO_LAT,
     lng: TOKYO_LNG,
-  }, 13);
+  }, 16);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -45,11 +44,11 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(map);
 
-fildAddressElement.value = `Lat ${TOKYO_LAT} Lng ${TOKYO_LNG}`;
+fieldAddressElement.value = `Lat ${TOKYO_LAT} Lng ${TOKYO_LNG}`;
 
 mainPinMarker.on('moveend', (evt) => {
   const { lat, lng } = evt.target.getLatLng();
-  fildAddressElement.value = `Lat ${lat.toFixed(6)} Lng ${lng.toFixed(6)}`;
+  fieldAddressElement.value = `Lat ${lat.toFixed(6)} Lng ${lng.toFixed(6)}`;
 });
 
 
@@ -60,10 +59,9 @@ const icon = L.icon({
 });
 
 
-adverts.forEach((element, i) => {
-  const coordinate = element.address.split(' ');
-  const lat = coordinate[0].slice(9);
-  const lng = coordinate[1].slice(9);
+const advertsView = (adverts) => {adverts.forEach((advert) => {
+  const {lat} = advert.location;
+  const {lng} = advert.location;
   const marker = L.marker({
     lat,
     lng,
@@ -74,5 +72,21 @@ adverts.forEach((element, i) => {
   );
 
   marker.addTo(map)
-    .bindPopup(collectionCard(adverts[i], i));
+    .bindPopup(collectionCard(advert));
 });
+};
+
+const resetMap = () => {
+  mainPinMarker.setLatLng({
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
+  });
+  map.setView({
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
+  }, 16);
+  map.closePopup();
+};
+
+
+export { advertsView, resetMap};
