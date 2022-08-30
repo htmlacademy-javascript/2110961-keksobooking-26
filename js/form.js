@@ -201,15 +201,6 @@ resetButton.addEventListener('click', (evt) => {
 }
 );
 
-const enableForms = () => {
-  advertFormElement.classList.remove('ad-form--disabled');
-  mapFilterElement.classList.remove('ad-form--disabled');
-  headerFormElement.disabled = false;
-  uloadRoomElement.disabled = false;
-  fildsetFormElements.forEach((item) => item.disabled = false);
-  mapFilterSelectElements.forEach((item) => item.disabled = false);
-  mapCheckboxSelectElements.forEach((item) => item.disabled = false);
-};
 
 const disableForms = () => {
   advertFormElement.classList.add('ad-form--disabled');
@@ -221,6 +212,15 @@ const disableForms = () => {
   mapCheckboxSelectElements.forEach((item) => item.disabled = true);
 };
 
+const enableForms = () => {
+  advertFormElement.classList.remove('ad-form--disabled');
+  mapFilterElement.classList.remove('ad-form--disabled');
+  headerFormElement.disabled = false;
+  uloadRoomElement.disabled = false;
+  fildsetFormElements.forEach((item) => item.disabled = false);
+  mapFilterSelectElements.forEach((item) => item.disabled = false);
+  mapCheckboxSelectElements.forEach((item) => item.disabled = false);
+};
 const sendFail = () => {
   showAlert(TXT_CANT_SEND_FORM);
 };
