@@ -14,6 +14,10 @@ const Price = {
   HIGH: 50000,
 };
 
+const PriceGrade = { ANY: 'any', LOW: 'low', MIDDLE: 'middle', HIGH: 'high' };
+
+
+
 const fieldAddressElement = document.querySelector('[name="address"]');
 
 const filterFormElement = document.querySelector('.map__filters');
@@ -48,28 +52,28 @@ const turnFilterOn = (data) => {
 };
 
 const filterByType = (offer, type) =>
-  type === 'any' || offer.offer.type === type;
+  type === PriceGrade.ANY || offer.offer.type === type;
 
 const filterByPrice = (offer, price) => {
   switch (price) {
-    case 'any':
+    case PriceGrade.ANY:
       return true;
-    case 'low':
+    case PriceGrade.LOW:
       return offer.offer.price < Price.MIDDLE;
-    case 'middle':
+    case PriceGrade.MIDDLE:
       return (
         offer.offer.price < Price.HIGH && offer.offer.price >= Price.MIDDLE
       );
-    case 'high':
+    case PriceGrade.HIGH:
       return offer.offer.price >= Price.HIGH;
   }
 };
 
 const filterByRooms = (offer, rooms) =>
-  rooms === 'any' || offer.offer.rooms === +rooms;
+  rooms === PriceGrade.ANY || offer.offer.rooms === +rooms;
 
 const filterByGuests = (offer, guests) =>
-  guests === 'any' || offer.offer.guests === Number(guests);
+  guests === PriceGrade.ANY || offer.offer.guests === Number(guests);
 
 const filterByFeauteres = (offer, features) =>
   features.every((feature) =>

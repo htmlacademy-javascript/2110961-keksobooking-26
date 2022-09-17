@@ -1,20 +1,31 @@
 
 import { sendData } from './api.js';
+import { getData } from './api.js';
 import { isEscapeKey } from './util.js';
 import { resetMap } from './script.js';
+import { advertsView } from './script.js';
 
 const FIRST_HEADER_LENGTH = 30;
 const SECOND_HEADER_LENGTH = 100;
 const MAX_PRICE_NIGHT = 100000;
 const TXT_CANT_SEND_FORM = 'Не удалось опубликовать объявление. Попробуйте ещё раз';
 const ALERT_SHOW_TIME = 5000;
+const TIME_INOUT_FIRST = '12:00';
+const TIME_INOUT_SECOND = '13:00';
+const TIME_INOUT_THIRD = '14:00';
+const DEFAULT_COORDINATE = 'Lat 35.6895 Lng 139.692';
 
 const body = document.body;
 const advertFormElement = document.querySelector('.ad-form');
+const previewAvatarElement = advertFormElement.querySelector('.ad-form-header__preview > img');
+const previewRoom = document.querySelector('.ad-form__photo');
 const headerFormElement = advertFormElement.querySelector('fieldset.ad-form-header');
 const uloadRoomElement = advertFormElement.querySelector('.ad-form__input');
 const fildsetFormElements = advertFormElement.querySelectorAll('.ad-form__element');
 const resetButton = advertFormElement.querySelector('.ad-form__reset');
+const priceSliderElement = advertFormElement.querySelector('.ad-form__slider');
+
+// console.log(priceSliderElement);
 
 const mapFilterElement = document.querySelector('.map__filters');
 const mapFilterSelectElements = mapFilterElement.querySelectorAll('.map__filter');
@@ -84,12 +95,26 @@ const roomPrice = {
   'palace': 10000,
 };
 
-const setLatLng = () => fieldAdressElement.value = 'Lat 35.6895 Lng 139.692';
+const setLatLng = () => {fieldAdressElement.value = DEFAULT_COORDINATE;};
+
+const hidePhoto = () => {
+  previewAvatarElement.src = 'img/muffin-grey.svg';
+  while (previewRoom.firstChild) {
+    previewRoom.firstChild.remove();
+  }
+};
 
 const resetInputWhenSendOk = () => {
   advertFormElement.reset();
+  mapFilterElement.reset();
+  hidePhoto();
   setLatLng();
   resetMap();
+  getData((adverts) => {
+    advertsView(adverts);
+  });
+  setLatLng();
+
 };
 
 const sendResult = (result) => {
@@ -97,6 +122,10 @@ const sendResult = (result) => {
     resetInputWhenSendOk();
   }
 
+  const onPopupMessageClick = (evt) => {
+    evt.stopPropagation();
+    closePopup(result);
+  };
   const onPopupMessageEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
@@ -104,39 +133,6 @@ const sendResult = (result) => {
       closePopup(result);
     }
   };
-  const onPopupMessageClick = (evt) => {
-    evt.stopPropagation();
-    closePopup(result);
-  };
-
-  fieldTimeInElement.addEventListener('change', () => {
-    switch (fieldTimeInElement.value) {
-      case '12:00':
-        fieldTimeOutElement.value = '12:00';
-        break;
-      case '13:00':
-        fieldTimeOutElement.value = '13:00';
-        break;
-      case '14:00':
-        fieldTimeOutElement.value = '14:00';
-        break;
-    }
-  });
-
-  fieldTimeOutElement.addEventListener('change', () => {
-    switch (fieldTimeOutElement.value) {
-      case '12:00':
-        fieldTimeInElement.value = '12:00';
-        break;
-      case '13:00':
-        fieldTimeInElement.value = '13:00';
-        break;
-      case '14:00':
-        fieldTimeInElement.value = '14:00';
-        break;
-    }
-  });
-
 
   function closePopup(item) {
     document.removeEventListener('keydown', onPopupMessageEscKeydown);
@@ -145,14 +141,41 @@ const sendResult = (result) => {
     sectionElement.remove();
   }
 
+
   body.appendChild(result === 'error' ? messageError : messageSuccess);
   document.addEventListener('keydown', onPopupMessageEscKeydown);
   document.addEventListener('click', onPopupMessageClick);
 };
 
-function validateRoomPrice() {
-  return roomPrice[roomTypesField.value] <= roomsPriceField.value;
-}
+fieldTimeInElement.addEventListener('change', () => {
+  switch (fieldTimeInElement.value) {
+    case TIME_INOUT_FIRST:
+      fieldTimeOutElement.value = TIME_INOUT_FIRST;
+      break;
+    case TIME_INOUT_SECOND:
+      fieldTimeOutElement.value = TIME_INOUT_SECOND;
+      break;
+    case TIME_INOUT_THIRD:
+      fieldTimeOutElement.value = TIME_INOUT_THIRD;
+      break;
+  }
+});
+
+fieldTimeOutElement.addEventListener('change', () => {
+  switch (fieldTimeOutElement.value) {
+    case TIME_INOUT_FIRST:
+      fieldTimeInElement.value = TIME_INOUT_FIRST;
+      break;
+    case TIME_INOUT_SECOND:
+      fieldTimeInElement.value = TIME_INOUT_SECOND;
+      break;
+    case TIME_INOUT_THIRD:
+      fieldTimeInElement.value = TIME_INOUT_THIRD;
+      break;
+  }
+});
+
+const validateRoomPrice = () => roomPrice[roomTypesField.value] <= roomsPriceField.value;
 
 pristine.addValidator(roomsPriceField, validateRoomPrice,
   'Вы указали слишком низкую цену'
@@ -162,42 +185,44 @@ roomTypesField.addEventListener('input', () => {
   roomsPriceField.placeholder = `цена от ${roomPrice[roomTypesField.value]}`;
 });
 
+roomsPriceField.addEventListener('input', () => {
+  priceSliderElement.noUiSlider.set(roomsPriceField.value);
+});
 
-function validateRoom() {
-  return roomOption[roomsField.value].includes(capacityField.value);
-}
+const validateRoom = () => roomOption[roomsField.value].includes(capacityField.value);
 
-function getRoomsErrorMessage() {
-  return `
+const getRoomsErrorMessage = () => `
     ${roomsField.querySelector('option:checked').textContent}
     ${roomsField.value === '1' ? 'не подходит' : 'не подходят'}
     ${capacityField.querySelector('option:checked').textContent}
   `;
-}
 
 pristine.addValidator(capacityField, validateRoom, getRoomsErrorMessage);
 
-function validateHeader(value) {
-  return value.length >= FIRST_HEADER_LENGTH && value.length <= SECOND_HEADER_LENGTH;
-}
+const validateHeader = (value) => value.length >= FIRST_HEADER_LENGTH && value.length <= SECOND_HEADER_LENGTH;
 
 pristine.addValidator(advertFormElement.querySelector('#title'), validateHeader,
   'От 30 до 100 символов'
 );
 
-function validatePrice(value) {
-  return value <= MAX_PRICE_NIGHT;
-}
+const validatePrice = (value) => value <= MAX_PRICE_NIGHT;
 
 pristine.addValidator(advertFormElement.querySelector('#price'), validatePrice,
   'Максимальная цена 100000'
 );
 
+
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   advertFormElement.reset();
+  mapFilterElement.reset();
+  hidePhoto();
   resetMap();
+  getData((adverts) => {
+    advertsView(adverts);
+  });
   setLatLng();
+  priceSliderElement.noUiSlider.set(5000);
 }
 );
 
@@ -207,9 +232,12 @@ const disableForms = () => {
   mapFilterElement.classList.add('ad-form--disabled');
   headerFormElement.disabled = true;
   uloadRoomElement.disabled = true;
-  fildsetFormElements.forEach((item) => item.disabled = true);
-  mapFilterSelectElements.forEach((item) => item.disabled = true);
-  mapCheckboxSelectElements.forEach((item) => item.disabled = true);
+  fildsetFormElements.forEach((item) => { item.disabled = true; }
+  );
+  mapFilterSelectElements.forEach((item) => { item.disabled = true; }
+  );
+  mapCheckboxSelectElements.forEach((item) => { item.disabled = true; }
+  );
 };
 
 const enableForms = () => {
@@ -217,9 +245,12 @@ const enableForms = () => {
   mapFilterElement.classList.remove('ad-form--disabled');
   headerFormElement.disabled = false;
   uloadRoomElement.disabled = false;
-  fildsetFormElements.forEach((item) => item.disabled = false);
-  mapFilterSelectElements.forEach((item) => item.disabled = false);
-  mapCheckboxSelectElements.forEach((item) => item.disabled = false);
+  fildsetFormElements.forEach((item) => { item.disabled = false; }
+  );
+  mapFilterSelectElements.forEach((item) => { item.disabled = false; }
+  );
+  mapCheckboxSelectElements.forEach((item) => { item.disabled = false; }
+  );
 };
 const sendFail = () => {
   showAlert(TXT_CANT_SEND_FORM);
@@ -241,6 +272,30 @@ const setUserFormSubmit = () => {
 };
 
 disableForms();
+
+
+noUiSlider.create(priceSliderElement, {
+  start: 5000,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+  step: 1,
+  range: {
+    'min': 0,
+    'max': 100000
+  }
+});
+
+priceSliderElement.noUiSlider.on('update', () => {
+  roomsPriceField.value = priceSliderElement.noUiSlider.get();
+
+});
 
 
 export { enableForms, disableForms, showAlert, setUserFormSubmit };
