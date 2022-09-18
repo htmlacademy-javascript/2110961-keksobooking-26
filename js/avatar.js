@@ -8,31 +8,27 @@ const fileChooserRoom = document.querySelector('.ad-form__upload input[type=file
 const previewRoom = document.querySelector('.ad-form__photo');
 
 
-fileChooserAvatar.addEventListener('change', () => {
-  const file = fileChooserAvatar.files[0];
+const addFile = (input) => {
+  const file = input.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    previewAvatar.src = URL.createObjectURL(file);
+    if (input === fileChooserAvatar) {
+      previewAvatar.src = URL.createObjectURL(file);
+    } else {
+      const roomPhoto = document.createElement('img');
+      roomPhoto.style.height = '70px';
+      roomPhoto.style.width = '70px';
+      roomPhoto.setAttribute('src', 'images/hydrangeas.jpg');
+      roomPhoto.src = URL.createObjectURL(file);
+      previewRoom.appendChild(roomPhoto);
+    }
   }
-});
+};
 
 
-fileChooserRoom.addEventListener('change', () => {
-  const file = fileChooserRoom.files[0];
-  const fileName = file.name.toLowerCase();
+fileChooserRoom.addEventListener('change', () => addFile(fileChooserRoom));
 
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
-
-  if (matches) {
-    const roomPhoto = document.createElement('img');
-    roomPhoto.style.height = '70px';
-    roomPhoto.style.width = '70px';
-    roomPhoto.setAttribute('src', 'images/hydrangeas.jpg');
-    roomPhoto.src = URL.createObjectURL(file);
-    previewRoom.appendChild(roomPhoto);
-  }
-});
-
+fileChooserAvatar.addEventListener('change', () => addFile(fileChooserAvatar));
