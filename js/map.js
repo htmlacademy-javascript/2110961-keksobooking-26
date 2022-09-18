@@ -16,8 +16,6 @@ const Price = {
 
 const PriceGrade = { ANY: 'any', LOW: 'low', MIDDLE: 'middle', HIGH: 'high' };
 
-
-
 const fieldAddressElement = document.querySelector('[name="address"]');
 
 const filterFormElement = document.querySelector('.map__filters');
@@ -26,7 +24,6 @@ const housingPriceElement = filterFormElement.querySelector('[name="housing-pric
 const housingRoomsElement = filterFormElement.querySelector('[name="housing-rooms"]');
 const housingGuestsElement = filterFormElement.querySelector('[name="housing-guests"]');
 const featureCheckboxesElement = filterFormElement.querySelectorAll('[name="features"]');
-
 
 let mapLoaded = false;
 let dataLoaded = false;

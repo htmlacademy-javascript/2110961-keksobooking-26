@@ -2,8 +2,8 @@
 import { sendData } from './api.js';
 import { getData } from './api.js';
 import { isEscapeKey } from './util.js';
-import { resetMap } from './script.js';
-import { advertsView } from './script.js';
+import { resetMap } from './map.js';
+import { advertsView } from './map.js';
 
 const FIRST_HEADER_LENGTH = 30;
 const SECOND_HEADER_LENGTH = 100;
@@ -24,8 +24,6 @@ const uloadRoomElement = advertFormElement.querySelector('.ad-form__input');
 const fildsetFormElements = advertFormElement.querySelectorAll('.ad-form__element');
 const resetButton = advertFormElement.querySelector('.ad-form__reset');
 const priceSliderElement = advertFormElement.querySelector('.ad-form__slider');
-
-// console.log(priceSliderElement);
 
 const mapFilterElement = document.querySelector('.map__filters');
 const mapFilterSelectElements = mapFilterElement.querySelectorAll('.map__filter');

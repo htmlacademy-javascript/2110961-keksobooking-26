@@ -1,5 +1,5 @@
 import { enableForms, showAlert } from './form.js';
-import {  turnFilterOff, turnFilterOn, setDataLoaded, getMapLoaded} from './script.js';
+import {  turnFilterOff, turnFilterOn, setDataLoaded, getMapLoaded} from './map.js';
 
 
 const URL_POST_ADVERT = 'https://26.javascript.pages.academy/keksobooking/';
